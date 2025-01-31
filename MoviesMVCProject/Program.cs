@@ -1,7 +1,14 @@
+using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<MovieDbContext>(option =>
+{
+    option.UseSqlServer(builder.Configuration.GetConnectionString("MoviesMVCProject"));
+});
 
 var app = builder.Build();
 
