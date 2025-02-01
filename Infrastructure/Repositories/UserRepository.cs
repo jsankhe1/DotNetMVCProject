@@ -8,7 +8,7 @@ public class UserRepository : BaseRepository<User>, IUserRepository
 {
     private readonly MovieDbContext _movieDbContext;
 
-    public UserRepository(MovieDbContext movieDbContext) : base(movieDbContext)
+    public UserRepository (MovieDbContext movieDbContext) : base(movieDbContext)
     {
         _movieDbContext = movieDbContext;
     }

@@ -23,4 +23,12 @@
       <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Views\Account\" />
+      <Folder Include="Views\Admin\" />
+      <Folder Include="Views\Cast\" />
+      <Folder Include="Views\Movie\" />
+      <Folder Include="Views\User\" />
+    </ItemGroup>
+
 </Project>
