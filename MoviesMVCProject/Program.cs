@@ -1,4 +1,7 @@
+using Core.Contracts.IRepositories;
+using Core.Contracts.Services;
 using Infrastructure.Data;
+using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,7 +11,12 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<MovieDbContext>(option =>
 {
     option.UseSqlServer(builder.Configuration.GetConnectionString("MoviesMVCProject"));
-});
+}); //Injecting DbContext.
+
+builder.Services.AddScoped<IMovieRepository, MovieRepository>(); // Dependency Injection
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ICastRepository, CastRepository>();
+
 
 var app = builder.Build();
 
