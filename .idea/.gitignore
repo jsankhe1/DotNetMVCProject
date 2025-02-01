@@ -14,3 +14,5 @@
 # Ignore build output directories
 bin/
 obj/
+# Do not ignore .csproj files
+!*.csproj
