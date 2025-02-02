@@ -16,9 +16,11 @@ public class MovieController : Controller
     }
 
     // GET
-    public IActionResult Index()
+    public IActionResult Index(int pageNumber = 1)
     {
-        var moviesPagedResultSet = _movieRepository.GetMoviesPaged(pageNumber: 1, pageSize: 20);
+        int pageSize = 20; // Movies per page
+
+        var moviesPagedResultSet = _movieRepository.GetMoviesPaged(pageNumber, pageSize);
 
         var movieModels = moviesPagedResultSet.Items.Select(movieResult => new MovieModel
         {
@@ -32,10 +34,10 @@ public class MovieController : Controller
         {
             PageSize = moviesPagedResultSet.PageSize,
             TotalCount = moviesPagedResultSet.TotalCount,
+            CurrentPage = moviesPagedResultSet.CurrentPage, // Now passes the correct page
             Items = movieModels
         };
-        
-        
+
         return View(movieCardPagedResults);
     }
 

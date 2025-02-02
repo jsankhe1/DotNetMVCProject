@@ -22,15 +22,42 @@
     </div>
 </div>
 <!-- Pagination Controls -->
-<nav aria-label="Page navigation example">
-    <ul class="pagination">
-        @for (int i = 1; i <= @Model.PageNumber; i++)
-        {
-            <li class="page-item"><a class="page-link" asp-action="Index" asp-controller="Genre" asp-route-pageNumbers="@i">@i</a></li>
+<nav aria-label="Movie Pagination">
+    <ul class="pagination justify-content-center">
 
+        <!-- Previous Button -->
+        @if (Model.CurrentPage > 1)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-action="Index" asp-controller="Movie" asp-route-pageNumber="@(Model.CurrentPage - 1)">Previous</a>
+            </li>
+        }
+        
+        @* We will only show 10 pagis  at a time*@
+        @{
+
+            int startPage = ((Model.CurrentPage - 1) / 10) * 10 + 1; // sets start page to 1 until current page == 10
+            int endPage = Math.Min(startPage + 9, Model.TotalPages);
+        }
+
+        <!-- Show 10 Pages Dynamically -->
+        @for (int i = startPage; i <= endPage; i++)
+        {
+            <li class="page-item @(Model.CurrentPage == i ? "active" : "")">
+                <a class="page-link" asp-action="Index" asp-controller="Movie" asp-route-pageNumber="@i">@i</a>
+            </li>
+        }
+
+        <!-- Next Button (Only Show if More Pages Exist) -->
+        @if (endPage < Model.TotalPages)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-action="Index" asp-controller="Movie" asp-route-pageNumber="@(Model.CurrentPage + 1)">Next</a>
+            </li>
         }
 
     </ul>
 </nav>
+
 </body>
 </html>

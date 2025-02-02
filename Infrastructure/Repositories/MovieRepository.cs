@@ -26,8 +26,9 @@ public class MovieRepository : BaseRepository<Movie>, IMovieRepository
         {
             PageSize = pageSize,
             TotalCount = totalMovies,
+            CurrentPage = pageNumber, // Now correctly stores the requested page number
             Items = movies
         };
-
     }
+
 }
