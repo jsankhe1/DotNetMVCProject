@@ -14,6 +14,7 @@ builder.Services.AddDbContext<MovieDbContext>(option =>
 }); //Injecting DbContext.
 
 builder.Services.AddScoped<IMovieRepository, MovieRepository>(); // Dependency Injection
+builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICastRepository, CastRepository>();
 

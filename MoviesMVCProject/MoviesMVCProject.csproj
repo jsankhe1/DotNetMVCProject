@@ -27,6 +27,7 @@
       <Folder Include="Views\Account\" />
       <Folder Include="Views\Admin\" />
       <Folder Include="Views\Cast\" />
+      <Folder Include="Views\Genre\" />
       <Folder Include="Views\User\" />
     </ItemGroup>
 

@@ -31,4 +31,30 @@ public class MovieRepository : BaseRepository<Movie>, IMovieRepository
         };
     }
 
+    public PagedResultSet<Movie> GetMoviesPagedByGenre(int? genreId, int pageNumber, int pageSize)
+    {
+        var genreQuery = _movieDbContext.Movies.AsQueryable();
+
+        if (genreId.HasValue)
+        {
+            genreQuery = genreQuery
+                .Where(m => m.MovieGenres.Any(g => g.GenreId == genreId.Value));
+        }
+        
+        //total movies in that genre
+        var totalMovies = genreQuery.Count();
+        var genreMovies = genreQuery
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+
+        return new PagedResultSet<Movie>
+        {
+            PageSize = pageSize,
+            TotalCount = totalMovies,
+            CurrentPage = pageNumber,
+            Items = genreMovies
+        };
+    }
 }

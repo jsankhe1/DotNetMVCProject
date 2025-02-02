@@ -3,24 +3,31 @@ using Core.Entities;
 using Core.Helpers;
 using Core.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MoviesMVCProject.Controllers;
 
 public class MovieController : Controller
 {
     private readonly IMovieRepository _movieRepository;
+    private readonly IGenreRepository _genreRepository;
 
-    public MovieController(IMovieRepository movieRepository)
+    public MovieController(IMovieRepository movieRepository, IGenreRepository genreRepository)
     {
         _movieRepository = movieRepository;
+        _genreRepository = genreRepository;
     }
 
     // GET
-    public IActionResult Index(int pageNumber = 1)
+    public IActionResult Index(int? genreId, int pageNumber = 1)
     {
         int pageSize = 20; // Movies per page
 
-        var moviesPagedResultSet = _movieRepository.GetMoviesPaged(pageNumber, pageSize);
+        //Decide which method from repo to run
+
+        var moviesPagedResultSet = (genreId.HasValue && genreId.Value !=0)
+            ? _movieRepository.GetMoviesPagedByGenre(genreId, pageNumber, pageSize)
+            : _movieRepository.GetMoviesPaged(pageNumber, pageSize);
 
         var movieModels = moviesPagedResultSet.Items.Select(movieResult => new MovieModel
         {
@@ -38,23 +45,16 @@ public class MovieController : Controller
             Items = movieModels
         };
 
+        ViewBag.Genres = new SelectList(_genreRepository.GetAll().ToList(), "Id", "Name", genreId);
+        ViewBag.SelectedGenre = genreId;
+
         return View(movieCardPagedResults);
     }
 
     [HttpGet]
-    public IActionResult Create()
+    public IActionResult MoviesByGenre(int genreId)
     {
-        return View();
+        return RedirectToAction("Index", new { genreId });
     }
-    [HttpGet]
-    public IActionResult Create(Movie movie)
-    {
-        if (ModelState.IsValid)
-        {
-            _movieRepository.Insert(movie);
-            return RedirectToAction("Index");
-        }
-        return View(movie);
-        
-    }
+    
 }
