@@ -1,0 +1,36 @@
+
+@model Core.Helpers.PagedResultSet<Core.Models.MovieModel>
+<html>
+<head>
+    <title>Movie Shop</title>
+</head>
+<body>
+<nav class="navbar navbar-dark bg-dark px-4">
+    <a class="navbar-brand text-white" href="#">Movie Shop 🎬</a>
+    <div class="d-flex">
+        <button class="btn btn-outline-light me-2">Login</button>
+        <button class="btn btn-light">Register</button>
+    </div>
+</nav>
+<!-- Movie Grid -->
+<div class="container mt-4">
+    <div class="row">
+        @foreach (var item in Model.Items)
+        {
+            <partial name="_MovieCard" model="item"/>
+        }
+    </div>
+</div>
+<!-- Pagination Controls -->
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        @for (int i = 1; i <= @Model.PageNumber; i++)
+        {
+            <li class="page-item"><a class="page-link" asp-action="Index" asp-controller="Genre" asp-route-pageNumbers="@i">@i</a></li>
+
+        }
+
+    </ul>
+</nav>
+</body>
+</html>
