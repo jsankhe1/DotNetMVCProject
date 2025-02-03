@@ -85,7 +85,7 @@ public class MovieRepository : BaseRepository<Movie>, IMovieRepository
             .Select(mt => new MovieTrailerModel
             {
                 TrailerName = mt.Name,
-                TrailerUrl = mt.Name
+                TrailerUrl = mt.TrailerUrl
             }).ToList();
 
         return trailerModels;
