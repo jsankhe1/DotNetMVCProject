@@ -1,11 +1,11 @@
 
-@model Core.Helpers.PagedResultSet<Core.Models.MovieModel>
+@model Core.Helpers.PagedResultSet<MovieCardModel>
 <head>
     <title>Movie Shop</title>
 </head>
 <body>
 <nav class="navbar navbar-dark bg-dark px-4">
-    <a class="navbar-brand text-white" href="#">Movie Shop 🎬</a>
+    <a class="navbar-brand text-white" asp-action="Index" asp-controller="Movie" >Movie Shop 🎬</a>
 
     <!-- Genre Selection Form -->
     <form method="get" asp-action="MoviesByGenre" asp-controller="Movie" class="d-flex ms-1">

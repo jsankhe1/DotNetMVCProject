@@ -1,7 +1,18 @@
-@model Core.Models.MovieModel
+@model MovieCardModel
+
+<style>
+    .movie-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+</style>
+
 <div class="col-md-3 mb-4">
     <div class="card shadow-lg border-0">
-        <img src="@Model.PosterUrl" class="card-img-top" alt="@Model.Title">
+        <a asp-action="MoviePage" asp-controller = "Movie" asp-route-movieId ="@Model.Id">
+            <img src="@Model.PosterUrl" class="card-img-top movie-card" alt="@Model.Title">
+            </a>
         <div class="card-body text-center">
             <h5 class="card-title">@Model.Title</h5>
         </div>

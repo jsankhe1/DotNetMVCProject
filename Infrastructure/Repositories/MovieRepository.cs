@@ -1,7 +1,9 @@
 using Core.Contracts.IRepositories;
 using Core.Entities;
 using Core.Helpers;
+using Core.Models;
 using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 
@@ -17,7 +19,7 @@ public class MovieRepository : BaseRepository<Movie>, IMovieRepository
     public PagedResultSet<Movie> GetMoviesPaged(int pageNumber, int pageSize)
     {
         var totalMovies = _movieDbContext.Movies.Count();
-        var movies = _movieDbContext.Movies
+        var movies = _movieDbContext.Movies.AsNoTracking()
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToList();
@@ -33,7 +35,7 @@ public class MovieRepository : BaseRepository<Movie>, IMovieRepository
 
     public PagedResultSet<Movie> GetMoviesPagedByGenre(int? genreId, int pageNumber, int pageSize)
     {
-        var genreQuery = _movieDbContext.Movies.AsQueryable();
+        var genreQuery = _movieDbContext.Movies.AsNoTracking().AsQueryable();
 
         if (genreId.HasValue)
         {
@@ -56,5 +58,45 @@ public class MovieRepository : BaseRepository<Movie>, IMovieRepository
             CurrentPage = pageNumber,
             Items = genreMovies
         };
+    }
+
+    public IEnumerable<MovieCastModel> GetMoviesCast(int movieId)
+    {
+        var castWithCharacters = _movieDbContext.Movies.AsNoTracking()
+            .Where(m => m.Id == movieId)
+            .SelectMany(m => m.MovieCasts)
+            .Select(mc => new MovieCastModel()
+            {
+                ActorName = mc.Cast.Name,
+                CharacterName = mc.Character,
+                ProfileImageUrl = mc.Cast.ProfilePath,
+                TmdbProfile = mc.Cast.TmdbUrl
+
+            }).ToList();
+        
+        return castWithCharacters;
+    }
+
+    public IEnumerable<MovieTrailerModel> GetMovieTrailers(int movieId)
+    {
+        var trailerModels = _movieDbContext.Movies.AsNoTracking()
+            .Where(m => m.Id == movieId)
+            .SelectMany(m => m.Trailers)
+            .Select(mt => new MovieTrailerModel
+            {
+                TrailerName = mt.Name,
+                TrailerUrl = mt.Name
+            }).ToList();
+
+        return trailerModels;
+
+    }
+    public new Movie GetById(int movieId)
+    {
+        return _movieDbContext.Movies
+            .Include(m => m.Reviews)
+            .Include(m => m.MovieGenres)
+            .ThenInclude(mg => mg.Genre)
+            .FirstOrDefault(m => m.Id == movieId);
     }
 }
