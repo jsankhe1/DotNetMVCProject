@@ -4,142 +4,36 @@
 <head>
     <title>@Model.Title - Movie Details</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <style>
-        /* Movie Banner */
-        .movie-banner {
-            position: relative;
-            background-size: cover;
-            background-position: center;
-            color: white;
-            padding: 50px;
-            min-height: 400px;
-            display: flex;
-            align-items: center;
-            justify-content: start;
-        }
-
-        /* Dark Overlay for Better Readability */
-        .movie-banner::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-        }
-
-        /* Ensure Content is Above Overlay */
-        .movie-content {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            align-items: center;
-        }
-
-        /* Movie Poster */
-        .movie-poster {
-            width: 250px;
-            border-radius: 10px;
-            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
-        }
-
-        /* Movie Details */
-        .movie-details {
-            margin-left: 30px;
-            max-width: 600px;
-        }
-
-        /* Movie Title */
-        .movie-title {
-            font-size: 2.5rem;
-            font-weight: bold;
-        }
-
-        /* Genre Badges */
-        .genre-badge {
-            background-color: rgba(255, 255, 255, 0.2);
-            padding: 6px 12px;
-            border-radius: 5px;
-            margin-right: 5px;
-            font-size: 14px;
-            display: inline-block;
-        }
-
-        /* Movie Facts & Trailers */
-        .movie-facts, .trailers-section {
-            margin-top: 20px;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 8px;
-        }
-
-        /* Fact Icons */
-        .fact-icon {
-            font-weight: bold;
-            padding: 5px 8px;
-            background: #343a40;
-            color: white;
-            border-radius: 5px;
-            margin-right: 5px;
-        }
-
-        /* Trailers */
-        .trailer-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .trailer-list li {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .trailer-link {
-            text-decoration: none;
-            font-weight: bold;
-            color: #007bff;
-            transition: color 0.3s;
-            margin-left: 8px;
-        }
-
-        .trailer-link:hover {
-            color: #0056b3;
-            text-decoration: underline;
-        }
-    </style>
 </head>
 <body>
 
-<!-- Navigation Bar -->
-<nav class="navbar navbar-dark bg-dark px-4">
-    <a class="navbar-brand text-white" asp-action="Index" asp-controller="Movie" >Movie Shop 🎬</a>
-</nav>
+@* <!-- Navigation Bar --> *@
+@* <nav class="navbar navbar-dark bg-dark px-4"> *@
+@*     <a class="navbar-brand text-white" asp-action="Index" asp-controller="Movie">Movie Shop 🎬</a> *@
+@* </nav> *@
+
 <!-- Movie Banner -->
-<div class="movie-banner" style="background-image: url('@Model.BackdropUrl');">
+<div class="position-relative text-white p-5" style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('@Model.BackdropUrl'); background-size: cover; min-height: 400px;">
     <div class="container">
-        <div class="row movie-content">
+        <div class="row align-items-center">
             <div class="col-md-3">
-                <img src="@Model.PosterUrl" class="movie-poster" alt="@Model.Title">
+                <img src="@Model.PosterUrl" class="img-fluid rounded shadow-lg" alt="@Model.Title">
             </div>
-            <div class="col-md-9 movie-details">
-                <h1 class="movie-title">@Model.Title</h1>
+            <div class="col-md-9">
+                <h1 class="fw-bold">@Model.Title</h1>
 
                 <!-- Genres Inside Banner -->
                 <div class="mb-3">
                     @foreach (var genre in Model.Genres)
                     {
-                        <span class="badge genre-badge">@genre</span>
-
+                        <span class="badge bg-light text-dark me-1">@genre</span>
                     }
                 </div>
 
-                <h4 class="text-success mt-2">@Model.Rating</h4>
-                <p>@Model.Overview</p>
-                <button class="btn btn-outline-light btn-review">Review</button>
-                <button class="btn btn-buy">Buy $9.90</button>
+                <h4 class="text-success">@Model.Rating</h4>
+                <p class="lead">@Model.Overview</p>
+                <button class="btn btn-outline-light">Review</button>
+                <button class="btn btn-light">Buy $9.90</button>
             </div>
         </div>
     </div>
@@ -149,34 +43,26 @@
 <div class="container mt-4">
     <div class="row">
         <!-- Movie Facts -->
-        <div class="col-md-4 movie-facts">
+        <div class="col-md-4">
             <h4>Movie Facts</h4>
             <ul class="list-group">
-                <li class="list-group-item">
-                    <span class="fact-icon">📅</span> Release Date: <strong>@Model.ReleaseDate?.ToString("MMM dd, yyyy")</strong>
-                </li>
-                <li class="list-group-item">
-                    <span class="fact-icon">⏳</span> Run Time: <strong>@Model.Runtime min</strong>
-                </li>
-                <li class="list-group-item">
-                    <span class="fact-icon">💰</span> Box Office: <strong>$@Model.BoxOffice?.ToString("N2")</strong>
-                </li>
-                <li class="list-group-item">
-                    <span class="fact-icon">💲</span> Budget: <strong>$@Model.Budget?.ToString("N2")</strong>
-                </li>
+                <li class="list-group-item"><span class="fw-bold">📅 Release Date:</span> @Model.ReleaseDate?.ToString("MMM dd, yyyy")</li>
+                <li class="list-group-item"><span class="fw-bold">⏳ Run Time:</span> @Model.Runtime min</li>
+                <li class="list-group-item"><span class="fw-bold">💰 Box Office:</span> $@Model.BoxOffice?.ToString("N2")</li>
+                <li class="list-group-item"><span class="fw-bold">💲 Budget:</span> $@Model.Budget?.ToString("N2")</li>
             </ul>
-            <div class="col-md-12">
-                <h4>Trailers</h4>
-                <ul class="trailer-list">
-                    @foreach (var trailer in Model.TrailerModels)
-                    {
-                        <li>
-                            <span class="fact-icon">▶️</span>
-                            <a href="@trailer.TrailerUrl" class="trailer-link" target="_blank">@trailer.TrailerName</a>
-                        </li>
-                    }
-                </ul>
-            </div>
+
+            <!-- Trailers Section -->
+            <h4 class="mt-4">Trailers</h4>
+            <ul class="list-group">
+                @foreach (var trailer in Model.TrailerModels)
+                {
+                    <li class="list-group-item d-flex align-items-center">
+                        <span class="me-2">▶️</span>
+                        <a href="@trailer.TrailerUrl" class="fw-bold text-primary text-decoration-none" target="_blank">@trailer.TrailerName</a>
+                    </li>
+                }
+            </ul>
         </div>
 
         <!-- Cast List -->
@@ -187,7 +73,7 @@
                 @foreach (var cast in Model.CastModels)
                 {
                     <tr>
-                        <td><img src="@cast.ProfileImageUrl" width="40" height="40" class="rounded-circle"></td>
+                        <td><img src="@cast.ProfileImageUrl" width="40" height="40" class="rounded-circle shadow-sm"></td>
                         <td>@cast.ActorName</td>
                         <td>@cast.CharacterName</td>
                     </tr>
@@ -196,13 +82,11 @@
             </table>
         </div>
     </div>
-
 </div>
-<script>
-    // Convert Razor model list into a JavaScript array
-    let genres = @Html.Raw(Json.Serialize(Model.Genres));
 
-    // Log genres to the console
+<!-- Console Log Genres -->
+<script>
+    let genres = @Html.Raw(Json.Serialize(Model.Genres));
     console.log("Genres List:", genres);
 </script>
 

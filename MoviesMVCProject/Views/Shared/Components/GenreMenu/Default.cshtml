@@ -1,0 +1,7 @@
+@model SelectList
+
+<form method="get" asp-action="MoviesByGenre" asp-controller="Movie" class="d-flex ms-1">
+    <select class="form-select me-2" name="genreId" asp-items="Model" onchange="this.form.submit()">
+        <option value="" disabled selected>Choose Genre</option>
+    </select>
+</form>
