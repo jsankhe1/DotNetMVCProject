@@ -16,7 +16,16 @@ public class GenreMenuViewComponent: ViewComponent
     public IViewComponentResult Invoke()
     {
         var genres = _genreRepository.GetAll().ToList();
-        var selectList = new SelectList(genres, "Id", "Name");
+
+        int selectedGenre = 0;
+        //  read genreId from query string (if set by pagination or MoviesByGenre)
+        if (int.TryParse(HttpContext.Request.Query["genreId"], out int id))
+        {
+            selectedGenre = id;
+        }
+        
+        // Create a SelectList using the selectedGenre value
+        var selectList = new SelectList(genres, "Id", "Name", selectedGenre == 0 ? null : selectedGenre);
         return View(selectList);
     }
 }
